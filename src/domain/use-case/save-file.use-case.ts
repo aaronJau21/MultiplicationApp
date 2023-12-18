@@ -1,4 +1,5 @@
 import fs from "fs";
+import { yarg } from "../../configs/plugins/yarns";
 
 export interface SaveFileUseCase {
   execute: (options: Options) => boolean;
@@ -6,7 +7,7 @@ export interface SaveFileUseCase {
 
 export interface Options {
   fileContnt: string;
-  destination?: string;
+  fileDestination?: string;
   fileName?: string;
 }
 
@@ -15,12 +16,12 @@ export class SaveFile implements SaveFileUseCase {
 
   execute({
     fileContnt,
-    destination = "outputs",
-    fileName = "table",
+    fileDestination = yarg.d,
+    fileName = yarg.n,
   }: Options): boolean {
     try {
-      fs.mkdirSync(destination, { recursive: true });
-      fs.writeFileSync(`${destination}/${fileName}.txt`, fileContnt);
+      fs.mkdirSync(fileDestination, { recursive: true });
+      fs.writeFileSync(`${fileDestination}/${fileName}.txt`, fileContnt);
       return true;
     } catch (error) {
       console.log(error);
